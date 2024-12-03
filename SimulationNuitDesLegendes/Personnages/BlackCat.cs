@@ -20,5 +20,7 @@ public class BlackCat : Belier
         // Link the two players
         player1.LinkedPlayer = player2;
         player2.LinkedPlayer = player1;
+        
+        Logger.Log($"The black cat linked a {player1.GetType().Name} and a {player2.GetType().Name}\n");
     }
 }

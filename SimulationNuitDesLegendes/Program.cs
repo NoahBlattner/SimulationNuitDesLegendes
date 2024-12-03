@@ -1,59 +1,87 @@
 ﻿using ExcelDataReader;
+using ExcelDataReader.Log;
 using SimulationNuitDesLegendes;
 
-// Define limits
+// Define excel limits
 const int startRow = 2;
 const int endRow = 14;
 const int startColumn = 1;
 const int endColumn = 8;
 
+// Define simulation parameters
+const int variantIterations = 100;
+const bool saveLogFile = true;
+
 // Run the simulation
 // Print the results
 PrintResults(RunSimulation());
 
-List<List<Game.Winner>> RunSimulation()
+List<List<Game.GameStats>> RunSimulation()
 {
-    var results = new List<List<Game.Winner>> ();
+    var results = new List<List<Game.GameStats>> ();
     
     // Run each variant 100 times and record the results
-    foreach (var currentVariant in GetSetupList())
+    var setupList = GetSetupList();
+    for (int i = 0; i < setupList.Count; i++)
     {
-        var winnerList = new List<Game.Winner>();
-        for (int i = 0; i < 100; i++)
+        var currentVariant = setupList[i];
+        
+        var statsList = new List<Game.GameStats>();
+        
+        // Run the variant 100 times
+        for (int j = 0; j < variantIterations; j++)
         {
             // Create a new game
+            Logger.Log($"Start of {i + 5} player variation, iteration {j + 1}");
             Game game = new Game(currentVariant[0], currentVariant[1], currentVariant[2], currentVariant[3], currentVariant[4], currentVariant[5], currentVariant[6], currentVariant[7]);
         
             // Run the game
-            var winner = game.RunGame();
+            var stats = game.RunGame();
         
             // Record the results
-            winnerList.Add(winner);
+            statsList.Add(stats);
+            Logger.Log($"The {stats.winner} won in {stats.rounds} rounds\n");
+            Logger.Log($"End of {i + 5} player variation, iteration {j + 1}");
+            Logger.SplitLog();
         }
-        results.Add(winnerList);
+        // Add the stats list to the results
+        results.Add(statsList);
+
+        if (saveLogFile)
+        {
+            // Save the log file of the last variant
+            Logger.SaveLogFile($"{i + 5} PlayerVariant");
+            Logger.ClearLog();
+        }
     }
 
     return results;
 }
 
-void PrintResults(List<List<Game.Winner>> results)
+void PrintResults(List<List<Game.GameStats>> results)
 {
     // Print the results
     for (int i = 0; i < results.Count; i++)
     {
+        // Compute the win percentages
         int totalGames = results[i].Count;
-        int vouivreGameWins = results[i].Count(w => w == Game.Winner.Vouivre);
-        int belierGameWins = results[i].Count(w => w == Game.Winner.Belier);
-        int hogGameWins = results[i].Count(w => w == Game.Winner.Hog);
+        int vouivreGameWins = results[i].Count(stat => stat.winner == Game.Winner.Vouivre);
+        int belierGameWins = results[i].Count(stat => stat.winner == Game.Winner.Belier);
+        int hogGameWins = results[i].Count(stat => stat.winner == Game.Winner.Hog);
         
         int vouivrePercentage = (int)((double)vouivreGameWins / totalGames * 100);
         int belierPercentage = (int)((double)belierGameWins / totalGames * 100);
         int hogPercentage = (int)((double)hogGameWins / totalGames * 100);
         
-        Console.WriteLine($"Variant {i + 1}");
+        // Compute the average number of rounds
+        double totalRounds = results[i].Sum(stat => stat.rounds);
+        double averageRounds = totalRounds / totalGames;
+        
+        Console.WriteLine($"For the {i + 5} player variation:");
         Console.WriteLine($"The Vouivre won {vouivreGameWins} out of {totalGames} games ({vouivrePercentage}%)");
         Console.WriteLine($"The Belier won {belierGameWins} out of {totalGames} games ({belierPercentage}%)");
         Console.WriteLine($"The Hog won {hogGameWins} out of {totalGames} games ({hogPercentage}%)");
+        Console.WriteLine($"The average number of rounds was {averageRounds}");
         Console.WriteLine();
     }
 }

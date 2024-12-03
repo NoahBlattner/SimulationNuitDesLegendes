@@ -15,8 +15,14 @@ public class Game
     
     private bool _isGameRunning = true;
     
+    public struct GameStats
+    {
+        public Winner winner;
+        public int rounds;
+    }
+    
     private Winner _winner = Winner.None;
-
+    
     public enum Winner
     {
         None,
@@ -133,7 +139,7 @@ public class Game
         }
     }
     
-    public Winner RunGame()
+    public GameStats RunGame()
     {
         // Start with night
         
@@ -143,10 +149,14 @@ public class Game
             _blackCat.Play(players);
         }
         
+        int roundCount = 0;
+        
         bool wasDinosaurAlive = _dinosaur?.IsAlive ?? false;
 
         do
         {
+            roundCount++;
+            
             // NIGHT
             // The robber plays
             if (_robber?.IsAlive == true)
@@ -167,7 +177,7 @@ public class Game
             Winner winner = CheckForWin();
             if (winner != Winner.None)
             {
-                return winner;
+                return new GameStats { winner = winner, rounds = roundCount };
             }
             
             // If the dinosaur died, let him play
@@ -181,12 +191,14 @@ public class Game
             winner = CheckForWin();
             if (winner != Winner.None)
             {
-                return winner;
+                return new GameStats { winner = winner, rounds = roundCount };
             }
             
             // DAY
+            // Vote
             Player votedPlayer = Vote(AlivePlayers());
             votedPlayer.Kill(Player.DeathReason.Democracy);
+            Logger.Log($"The players voted to kill a {votedPlayer.GetType().Name}\n");
             
             // If the dinosaur died, let him play
             if (wasDinosaurAlive && !_dinosaur!.IsAlive)
@@ -199,12 +211,12 @@ public class Game
             winner = CheckForWin();
             if (winner != Winner.None)
             {
-                return winner;
+                return new GameStats { winner = winner, rounds = roundCount };
             }
             
         } while(_isGameRunning);
 
-        return Winner.None;
+        return new GameStats { winner = Winner.None, rounds = roundCount };
     }
     
     private Player Vote(List<Player> players)
@@ -228,31 +240,24 @@ public class Game
         foreach (var player in alivePlayers)
         {
             // Get hog count
-            if (player.GetType() == typeof(Hog))
+            if (player.GetType() == typeof(Hog) || player.GetType() == typeof(Vouivre))
             {
                 countHog++;
             }
-            else if (player.GetType() == typeof(Belier))
+            else
             {
                 countBelier++;
             }
         }
         
-        // Check if the Vouivre is alive
-        if (vouivreAlive)
-        {
-            countHog++;
-        }
-        
-        // Check win
-        if (alivePlayers.Count == 2 && vouivreAlive)
-        {
-            return Winner.Vouivre;
-        }
-        
         // If there are more or equal Hogs than Beliers, Hogs win
         if (countBelier <= countHog)
         {
+            if (vouivreAlive && countHog <= 1)
+            {
+                return Winner.Vouivre;
+            }
+            
             return Winner.Hog;
         } else if (countHog == 0) // If there are no Hogs, Beliers win
         {

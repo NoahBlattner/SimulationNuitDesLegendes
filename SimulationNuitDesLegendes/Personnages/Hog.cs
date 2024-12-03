@@ -21,6 +21,8 @@ public class Hog : Player
         
         // Try to kill the player
         attackedPlayer.Kill(DeathReason.Hogs);
+        
+        Logger.Log($"The hogs attacked a {attackedPlayer.GetType().Name}\n");
     }
     
     public override void Play(List<Player> alivePlayers)

@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("SimulationNuitDesLegendes")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+664479f209ff3804788f0626870e5b6baff4882c")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+03461189b32fb913fa3de33f53ca970327feda8f")]
 [assembly: System.Reflection.AssemblyProductAttribute("SimulationNuitDesLegendes")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SimulationNuitDesLegendes")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

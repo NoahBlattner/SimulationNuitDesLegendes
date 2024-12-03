@@ -28,6 +28,7 @@ public abstract class Player
         // The hogs can't kill a protected player
         if (_isProtected && deathReason == DeathReason.Hogs)
         {
+            Logger.Log($"{this.GetType().Name} is protected and survived the hogs\n");
             return;
         }
 
@@ -47,6 +48,8 @@ public abstract class Player
                 // If the linked player is the Vouivre
                 // She will not be killed and her link to this player is severed
                 LinkedPlayer.LinkedPlayer = null;
+
+                Logger.Log($"As {GetType().Name} was killed, the Vouivre survived the black magic linking them");
             }
             else // Else, kill the linked player
             {
@@ -55,6 +58,8 @@ public abstract class Player
 
                 // Kill the linked player
                 LinkedPlayer.Kill(DeathReason.Curse);
+                Logger.Log(
+                    $"As {GetType().Name} was killed, a {LinkedPlayer.GetType().Name} died by the black magic linking them"); 
                 LinkedPlayer = null;
             }
         }

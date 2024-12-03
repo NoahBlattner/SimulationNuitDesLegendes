@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\noahb\\RiderProjects\\SimulationNuitDesLegendes\\SimulationNuitDesLegendes\\SimulationNuitDesLegendes.csproj": {}
+    "C:\\Users\\Noah\\RiderProjects\\SimulationNuitDesLegendes\\SimulationNuitDesLegendes\\SimulationNuitDesLegendes.csproj": {}
   },
   "projects": {
-    "C:\\Users\\noahb\\RiderProjects\\SimulationNuitDesLegendes\\SimulationNuitDesLegendes\\SimulationNuitDesLegendes.csproj": {
+    "C:\\Users\\Noah\\RiderProjects\\SimulationNuitDesLegendes\\SimulationNuitDesLegendes\\SimulationNuitDesLegendes.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\noahb\\RiderProjects\\SimulationNuitDesLegendes\\SimulationNuitDesLegendes\\SimulationNuitDesLegendes.csproj",
+        "projectUniqueName": "C:\\Users\\Noah\\RiderProjects\\SimulationNuitDesLegendes\\SimulationNuitDesLegendes\\SimulationNuitDesLegendes.csproj",
         "projectName": "SimulationNuitDesLegendes",
-        "projectPath": "C:\\Users\\noahb\\RiderProjects\\SimulationNuitDesLegendes\\SimulationNuitDesLegendes\\SimulationNuitDesLegendes.csproj",
-        "packagesPath": "C:\\Users\\noahb\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\noahb\\RiderProjects\\SimulationNuitDesLegendes\\SimulationNuitDesLegendes\\obj\\",
+        "projectPath": "C:\\Users\\Noah\\RiderProjects\\SimulationNuitDesLegendes\\SimulationNuitDesLegendes\\SimulationNuitDesLegendes.csproj",
+        "packagesPath": "C:\\Users\\Noah\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Noah\\RiderProjects\\SimulationNuitDesLegendes\\SimulationNuitDesLegendes\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\noahb\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\Noah\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
@@ -76,7 +76,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.401/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Users\\Noah\\.dotnet\\sdk\\8.0.303/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
