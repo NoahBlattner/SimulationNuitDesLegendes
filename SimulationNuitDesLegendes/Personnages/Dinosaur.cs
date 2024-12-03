@@ -1,13 +1,13 @@
 ﻿namespace SimulationNuitDesLegendes.Personnages;
 
-public class Monk : Belier
+public class Dinosaur : Belier
 {
     public override void Play(List<Player> alivePlayers)
     {
-        // Protect a random player
+        // Kill a random player
         Random random = new Random();
         int randomIndex = random.Next(0, alivePlayers.Count);
-        Player playerToProtect = alivePlayers[randomIndex];
-        playerToProtect.Protect();
+        Player playerToKill = alivePlayers[randomIndex];
+        playerToKill.Kill(DeathReason.Eaten);
     }
 }

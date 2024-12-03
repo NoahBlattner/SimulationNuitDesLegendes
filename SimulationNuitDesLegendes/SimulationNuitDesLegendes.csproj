@@ -7,4 +7,11 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+      <PackageReference Include="DotNetCore.NPOI" Version="1.2.3" />
+      <PackageReference Include="ExcelDataReader" Version="3.7.0" />
+      <PackageReference Include="ExcelDataReader.DataSet" Version="3.7.0" />
+      <PackageReference Include="NPOI.Excel" Version="2.1.1" />
+    </ItemGroup>
+
 </Project>

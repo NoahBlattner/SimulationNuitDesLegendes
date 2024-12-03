@@ -5,9 +5,10 @@ public abstract class Player
     public enum DeathReason
     {
         Hogs,
-        Vote,
+        Democracy,
         Curse,
-        Caught
+        Caught,
+        Eaten
     }
     
     protected bool IsProtected = false;
@@ -17,7 +18,12 @@ public abstract class Player
 
     public abstract void Play(List<Player> alivePlayers);
     
-    public void Kill(DeathReason deathReason)
+    public void Protect()
+    {
+        IsProtected = true;
+    }
+    
+    public virtual void Kill(DeathReason deathReason)
     {
         // The hogs can't kill a protected player
         if (IsProtected && deathReason == DeathReason.Hogs)

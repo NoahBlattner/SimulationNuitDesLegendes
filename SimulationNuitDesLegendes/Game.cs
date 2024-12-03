@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using NPOI.SS.Formula.Functions;
 using SimulationNuitDesLegendes.Personnages;
 
 namespace SimulationNuitDesLegendes;
@@ -10,8 +11,11 @@ public class Game
     Robber? _robber = null;
     Monk? _monk = null;
     Bishop? _bishop = null;
+    Dinosaur? _dinosaur = null;
     
     private bool _isGameRunning = true;
+    
+    private Winner _winner = Winner.None;
 
     public enum Winner
     {
@@ -23,6 +27,55 @@ public class Game
     
     // List of all players in the game
     List<Player> players = new List<Player>();
+    
+    public Game(int vouivreCount, int belierCount, int hogCount, int robberCount, int monkCount, int bishopCount, int blackCatCount, int dinosaurCount)
+    {
+        // Add all players to the game
+        for (int i = 0; i < vouivreCount; i++)
+        {
+            AddPlayer(new Vouivre());
+        }
+        
+        for (int i = 0; i < belierCount; i++)
+        {
+            AddPlayer(new Belier());
+        }
+        
+        for (int i = 0; i < hogCount; i++)
+        {
+            AddPlayer(new Hog());
+        }
+        
+        for (int i = 0; i < robberCount; i++)
+        {
+            AddPlayer(new Robber());
+        }
+        
+        for (int i = 0; i < monkCount; i++)
+        {
+            AddPlayer(new Monk());
+        }
+        
+        for (int i = 0; i < bishopCount; i++)
+        {
+            AddPlayer(new Bishop());
+        }
+        
+        for (int i = 0; i < blackCatCount; i++)
+        {
+            AddPlayer(new BlackCat());
+        }
+
+        for (int i = 0; i < dinosaurCount; i++)
+        {
+            AddPlayer(new Dinosaur());
+        }
+        
+        if (_vouivre == null)
+        {
+            throw new Exception("Vouivre is required to play the game");
+        }
+    }
     
     public Game(List<Player> players)
     {
@@ -38,7 +91,7 @@ public class Game
         }
     }
     
-    private List<Player> AlivePlayers()
+    public List<Player> AlivePlayers()
     {
         List<Player> alivePlayers = new List<Player>();
         foreach (var player in players)
@@ -86,6 +139,8 @@ public class Game
         {
             _blackCat.Play(players);
         }
+        
+        bool wasDinosaurAlive = _dinosaur?.IsAlive ?? false;
 
         do
         {
@@ -106,9 +161,30 @@ public class Game
                 return winner;
             }
             
+            // If the dinosaur died, let him play
+            if (wasDinosaurAlive && !_dinosaur!.IsAlive)
+            {
+                _dinosaur!.Play(AlivePlayers());
+                wasDinosaurAlive = false;
+            }
+            
+            // Check if someone won
+            winner = CheckForWin();
+            if (winner != Winner.None)
+            {
+                return winner;
+            }
+            
             // DAY
             Player votedPlayer = Vote();
-            votedPlayer.Kill(Player.DeathReason.Vote);
+            votedPlayer.Kill(Player.DeathReason.Democracy);
+            
+            // If the dinosaur died, let him play
+            if (wasDinosaurAlive && !_dinosaur!.IsAlive)
+            {
+                _dinosaur!.Play(AlivePlayers());
+                wasDinosaurAlive = false;
+            }
             
             // Check if someone won
             winner = CheckForWin();
