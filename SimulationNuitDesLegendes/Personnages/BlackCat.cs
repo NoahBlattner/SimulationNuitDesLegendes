@@ -2,7 +2,6 @@
 
 public class BlackCat : Belier
 {
-    
     public override void Play(List<Player> alivePlayers)
     {
         // Link two players 

@@ -10,8 +10,8 @@ public abstract class Player
         Caught,
         Eaten
     }
-    
-    protected bool IsProtected = false;
+
+    private bool _isProtected = false;
     public bool IsAlive = true;
     
     public Player? LinkedPlayer = null;
@@ -20,29 +20,43 @@ public abstract class Player
     
     public void Protect()
     {
-        IsProtected = true;
+        _isProtected = true;
     }
     
-    public virtual void Kill(DeathReason deathReason)
+    public void Kill(DeathReason deathReason)
     {
         // The hogs can't kill a protected player
-        if (IsProtected && deathReason == DeathReason.Hogs)
+        if (_isProtected && deathReason == DeathReason.Hogs)
         {
             return;
         }
+
+        if (!IsAlive)
+        {
+            throw new InvalidOperationException("Can't kill a dead player");
+        }
         
         IsAlive = false;
+        
         // If the player is linked to another player, kill the other player
         // Except if the other player is the Vouivre
-        if (LinkedPlayer != null
-            && LinkedPlayer.GetType() != typeof(Vouivre))
+        if (LinkedPlayer != null)
         {
-            // Avoid infinite loop
-            LinkedPlayer.LinkedPlayer = null;
-        
-            // Kill the linked player
-            LinkedPlayer.Kill(DeathReason.Curse);
-            LinkedPlayer = null;
+            if (LinkedPlayer is Vouivre)
+            {
+                // If the linked player is the Vouivre
+                // She will not be killed and her link to this player is severed
+                LinkedPlayer.LinkedPlayer = null;
+            }
+            else // Else, kill the linked player
+            {
+                // Avoid infinite loop
+                LinkedPlayer.LinkedPlayer = null;
+
+                // Kill the linked player
+                LinkedPlayer.Kill(DeathReason.Curse);
+                LinkedPlayer = null;
+            }
         }
     }
 }

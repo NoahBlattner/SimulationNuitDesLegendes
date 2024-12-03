@@ -127,6 +127,9 @@ public class Game
             case Bishop bishop:
                 _bishop = bishop;
                 break;
+            case Dinosaur dinosaur:
+                _dinosaur = dinosaur;
+                break;
         }
     }
     
@@ -146,10 +149,16 @@ public class Game
         {
             // NIGHT
             // The robber plays
-            _robber?.Play(AlivePlayers());
+            if (_robber?.IsAlive == true)
+            {
+                _robber.Play(AlivePlayers());
+            }
             
             // The monk plays
-            _monk?.Play(AlivePlayers());
+            if (_monk?.IsAlive == true)
+            {
+                _monk.Play(AlivePlayers());
+            }
             
             // The hogs play
             Hog.AttackPlayer(AlivePlayers());
@@ -176,7 +185,7 @@ public class Game
             }
             
             // DAY
-            Player votedPlayer = Vote();
+            Player votedPlayer = Vote(AlivePlayers());
             votedPlayer.Kill(Player.DeathReason.Democracy);
             
             // If the dinosaur died, let him play
@@ -198,7 +207,7 @@ public class Game
         return Winner.None;
     }
     
-    private Player Vote()
+    private Player Vote(List<Player> players)
     {
         // As this is jsut a simulation, the vote is random
         // This system does not consider a possible draw
